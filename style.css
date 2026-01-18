@@ -1,31 +1,41 @@
+/* 1. VARIABLES ET BASE */
 :root {
     --bg-dark: #0f172a;
     --bg-card: #1e293b;
     --accent: #3b82f6;
+    --accent-hover: #2563eb;
     --text-white: #ffffff;
     --text-dim: #94a3b8;
+    --msg-in: #334155; /* Gris-bleu pour les autres */
 }
 
 body {
-    background: radial-gradient(circle at top, #1e293b, #0f172a);
-    height: 100vh; margin: 0; font-family: 'Inter', sans-serif;
-    display: flex; align-items: center; justify-content: center;
-}
-
-.user-pic {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    vertical-align: middle;
-    margin-right: 8px;
-}
-
-.message b {
-    font-size: 0.75rem;
-    color: #3b82f6;
+    background: radial-gradient(circle at top, var(--bg-card), var(--bg-dark));
+    height: 100vh;
+    margin: 0;
+    font-family: 'Inter', sans-serif;
     display: flex;
     align-items: center;
-    margin-bottom: 4px;
+    justify-content: center;
+    color: var(--text-white);
+}
+
+/* 2. ÉCRAN D'AUTHENTIFICATION */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.auth-box {
+    background: var(--bg-card);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    width: 320px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .btn-google {
@@ -38,188 +48,153 @@ body {
     gap: 10px;
     width: 100%;
     font-size: 1rem;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.btn-google:hover {
-    background: #f8f8f8;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-}
-
-.btn-google img {
-    width: 20px;
-}
-
-/* --- AUTH SCREEN --- */
-.auth-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: radial-gradient(circle, #1e293b, #0f172a);
-}
-
-.auth-box {
-    background: #1e293b;
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-    text-align: center;
-    width: 320px;
-}
-
-.auth-box input {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border-radius: 8px;
-    border: 1px solid #334155;
-    background: #0f172a;
-    color: white;
-    box-sizing: border-box;
-}
-
-.auth-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-button {
     padding: 12px;
     border-radius: 8px;
-    border: none;
     cursor: pointer;
     font-weight: bold;
     transition: 0.3s;
 }
 
-.btn-primary { background: #3b82f6; color: white; }
-.btn-secondary { background: #334155; color: white; }
-.btn-primary:hover { background: #2563eb; }
+.btn-google:hover {
+    background: #f8f8f8;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
 
-/* --- CHAT STYLES --- */
+.btn-google img { width: 20px; }
+
+/* 3. STRUCTURE DU CHAT */
+.chat-container {
+    width: 95%;
+    max-width: 600px;
+    height: 85vh;
+    background: var(--bg-card);
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}
+
 header {
-    background: #1e293b;
+    background: rgba(30, 41, 59, 0.8);
     padding: 15px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #334155;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-#user-display { font-size: 0.8rem; color: #94a3b8; }
+#user-display { font-size: 0.85rem; color: var(--text-dim); }
 
-.logout-btn { background: #ef4444; color: white; padding: 5px 15px; }
+.logout-btn {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
 
-/* Bulles de messages */
-.message { padding: 12px; border-radius: 15px; max-width: 70%; margin-bottom: 5px; }
-.incoming { background: #ffffff; color: #1e293b; align-self: flex-start; }
-.outgoing { background: #3b82f6; color: white; align-self: flex-end; }
+/* 4. ZONE DES MESSAGES */
+.chat-box {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: rgba(15, 23, 42, 0.2);
+}
 
-/* Messages des AUTRES */
+.message {
+    padding: 12px 16px;
+    border-radius: 18px;
+    max-width: 75%;
+    position: relative;
+    animation: fadeIn 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Messages reçus (Autres) */
 .message.incoming {
-    background: #ffffff; /* Fond blanc */
-    color: #1e293b;      /* Texte bleu nuit */
+    background: var(--msg-in);
+    color: var(--text-white);
     align-self: flex-start;
-    border-radius: 18px 18px 18px 4px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border-bottom-left-radius: 4px;
 }
 
 .pseudo-label {
-    display: block;
-    color: #2563eb; /* Bleu vif pour le pseudo des autres */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #fbbf24; /* Jaune ambre */
     font-size: 0.75rem;
+    font-weight: bold;
     margin-bottom: 4px;
 }
 
-/* Mes messages */
-.message.outgoing {
-    background: #3b82f6; /* Bleu Firebase */
-    color: white;
-    align-self: flex-end;
-    border-radius: 18px 18px 4px 18px;
+.user-pic {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
 }
 
-/* Heure du message */
+/* Messages envoyés (Moi) */
+.message.outgoing {
+    background: var(--accent);
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+}
+
 .time-label {
-    display: block;
     font-size: 0.65rem;
     margin-top: 4px;
     opacity: 0.6;
     text-align: right;
 }
 
-.message.incoming .time-label { color: #64748b; }
-.message.outgoing .time-label { color: #e0e7ff; }
-
-.logout-btn {
-    background: #ef4444;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.8rem;
-}
-
-/* Conteneur principal */
-.chat-container {
-    width: 95%; max-width: 600px; height: 85vh;
-    background: var(--bg-card); border-radius: 24px;
-    display: flex; flex-direction: column; 
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255,255,255,0.1);
-}
-
-/* Zone des messages */
-.chat-box {
-    flex: 1; padding: 20px; overflow-y: auto;
-    display: flex; flex-direction: column; gap: 12px;
-}
-
-.message {
-    padding: 12px 16px; border-radius: 18px;
-    max-width: 75%; position: relative;
-    animation: fadeIn 0.3s ease;
-}
-
-/* Message des AUTRES (Blanc sur gris foncé) */
-.message.incoming {
-    background: #334155; color: var(--text-white);
-    align-self: flex-start; border-bottom-left-radius: 4px;
-}
-
-/* Pseudo des autres (Couleur aléatoire ou fixe) */
-.message.incoming b {
-    color: #fbbf24; /* Jaune ambre pour ressortir */
-    font-size: 0.75rem; display: block; margin-bottom: 4px;
-}
-
-/* Message de MOI (Bleu) */
-.message.outgoing {
-    background: var(--accent); color: white;
-    align-self: flex-end; border-bottom-right-radius: 4px;
-}
-
-.message.outgoing b { display: none; /* Pas besoin de voir mon propre nom */ }
-
-/* Formulaire d'envoi */
+/* 5. FORMULAIRE D'ENVOI */
 #chat-form {
-    padding: 20px; background: rgba(15, 23, 42, 0.5);
-    display: flex; gap: 10px; border-top: 1px solid rgba(255,255,255,0.1);
+    padding: 20px;
+    background: rgba(15, 23, 42, 0.5);
+    display: flex;
+    gap: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 #chat-form input {
-    flex: 1; background: #1e293b; border: 1px solid #334155;
-    color: white; padding: 12px 18px; border-radius: 12px; outline: none;
+    flex: 1;
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 12px;
+    outline: none;
+    transition: border 0.3s;
 }
+
+#chat-form input:focus { border-color: var(--accent); }
 
 #chat-form button {
-    background: var(--accent); color: white; border: none;
-    padding: 0 20px; border-radius: 12px; font-weight: bold; cursor: pointer;
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0 20px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
 }
 
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+#chat-form button:hover { background: var(--accent-hover); }
+
+/* ANIMATIONS */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
