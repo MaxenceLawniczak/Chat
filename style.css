@@ -38,6 +38,11 @@ body {
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
+.btn-google img {
+    width: 20px;
+    height: 20px;
+}
+
 /* BOUTON DECONNEXION STYLE */
 .logout-btn {
     background: rgba(239, 68, 68, 0.15);
@@ -86,6 +91,26 @@ header {
     display: flex;
     flex-direction: column;
     gap: 15px;
+}
+
+.auth-box {
+    background: var(--bg-card);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    width: 300px;
+    text-align: center;
+}
+
+.auth-box h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.auth-box p {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin-bottom: 20px;
 }
 
 .message-wrapper {
