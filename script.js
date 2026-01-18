@@ -19,12 +19,11 @@ function signInWithGoogle() {
     auth.signInWithPopup(provider).catch(err => alert(err.message));
 }
 
-// Fonction pour enregistrer le pseudo perso
 function saveUsername() {
     const chosenName = document.getElementById('custom-username').value;
     if (chosenName.trim() !== "") {
-        localStorage.setItem('chat_pseudo', chosenName); // On sauvegarde dans le navigateur
-        setupChatUI(auth.currentUser); // On lance le chat
+        localStorage.setItem('chat_pseudo', chosenName);
+        setupChatUI(auth.currentUser);
     } else {
         alert("Merci d'entrer un pseudo !");
     }
@@ -32,19 +31,15 @@ function saveUsername() {
 
 auth.onAuthStateChanged(user => {
     if (user) {
-        // Est-ce qu'on a déjà un pseudo enregistré ?
         const savedPseudo = localStorage.getItem('chat_pseudo');
         
         if (!savedPseudo) {
-            // Pas de pseudo ? On montre l'écran de choix
             document.getElementById('auth-screen').style.display = 'none';
             document.getElementById('username-screen').style.display = 'flex';
         } else {
-            // Déjà un pseudo ? On lance le chat direct
             setupChatUI(user);
         }
     } else {
-        // Déconnecté
         document.getElementById('auth-screen').style.display = 'flex';
         document.getElementById('chat-screen').style.display = 'none';
         document.getElementById('username-screen').style.display = 'none';
@@ -57,7 +52,7 @@ function setupChatUI(user) {
     document.getElementById('chat-screen').style.display = 'flex';
     
     window.currentUserId = user.uid;
-    window.currentUsername = localStorage.getItem('chat_pseudo'); // On utilise le pseudo perso
+    window.currentUsername = localStorage.getItem('chat_pseudo');
     window.userPhoto = user.photoURL;
 
     document.getElementById('user-display').innerText = `Pseudo : ${window.currentUsername}`;
