@@ -14,6 +14,7 @@ const db = firebase.database();
 const messagesRef = db.ref('messages');
 const provider = new firebase.auth.GoogleAuthProvider();
 
+
 function signInWithGoogle() {
     auth.signInWithPopup(provider).catch(err => alert(err.message));
 }
