@@ -21,12 +21,24 @@ function signInWithGoogle() {
 
 function saveUsername() {
     const chosenName = document.getElementById('custom-username').value;
-    if (chosenName.trim() !== "") {
+    if (chosenName.trim().length >= 3) {
         localStorage.setItem('chat_pseudo', chosenName);
-        setupChatUI(auth.currentUser);
+        
+        showChat(auth.currentUser);
     } else {
-        alert("Merci d'entrer un pseudo !");
+        alert("Ton pseudo doit faire au moins 3 caractères !");
     }
+}
+
+function showChat(user) {
+    document.getElementById('username-screen').style.display = 'none';
+    document.getElementById('chat-screen').style.display = 'flex';
+    
+    window.currentUserId = user.uid;
+    window.currentUsername = localStorage.getItem('chat_pseudo');
+    window.userPhoto = user.photoURL;
+
+    document.getElementById('user-display').innerText = `Connecté : ${window.currentUsername}`;
 }
 
 auth.onAuthStateChanged(user => {
