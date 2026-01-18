@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+</head>
+<body>
+
+    <div id="auth-screen" class="auth-container">
+        <div class="auth-box">
+            <h2>⚡ Chat Moderne</h2>
+            <p>Connectez-vous pour commencer à discuter</p>
+            <button onclick="signInWithGoogle()" class="btn-google">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+                Se connecter avec Google
+            </button>
+        </div>
+    </div>
+
+    <div id="chat-screen" class="chat-container" style="display: none;">
+        <header>
+            <div class="user-info">
+                <span id="user-display">Chargement...</span>
+            </div>
+            <button onclick="logout()" class="logout-btn">Déconnexion</button>
+        </header>
+
+        <div id="chat-box" class="chat-box"></div>
+
+        <form id="chat-form">
+            <input type="text" id="message" placeholder="Écrivez votre message..." required autocomplete="off">
+            <button type="submit">Envoyer</button>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
