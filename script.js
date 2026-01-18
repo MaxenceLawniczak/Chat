@@ -19,6 +19,17 @@ function signInWithGoogle() {
     auth.signInWithPopup(provider).catch(err => alert(err.message));
 }
 
+function logout() {
+    auth.signOut()
+        .then(() => {
+            console.log("Utilisateur déconnecté");
+        })
+        .catch((error) => {
+            console.error("Erreur lors de la déconnexion :", error);
+            alert("Impossible de se déconnecter : " + error.message);
+        });
+}
+
 function saveUsername() {
     const chosenName = document.getElementById('custom-username').value;
     if (chosenName.trim().length >= 3) {
@@ -95,7 +106,6 @@ messagesRef.limitToLast(30).on('child_added', (snapshot) => {
     const messageElement = document.createElement('div');
     messageElement.className = `message ${isMe ? 'outgoing' : 'incoming'}`;
     
-    // On n'affiche le pseudo et la photo que pour les autres
     const userInfoHTML = !isMe ? `
         <div class="pseudo-label">
             <img src="${data.photo}" class="user-pic">
