@@ -13,12 +13,19 @@
 
     <div id="auth-screen" class="auth-container">
         <div class="auth-box">
-            <h2>⚡ Chat Moderne</h2>
-            <p>Connectez-vous pour commencer à discuter</p>
+            <h2>⚡ Chat</h2>
             <button onclick="signInWithGoogle()" class="btn-google">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
                 Se connecter avec Google
             </button>
+        </div>
+    </div>
+
+    <div id="username-screen" class="auth-container" style="display: none;">
+        <div class="auth-box">
+            <h3>Choisis ton pseudo perso</h3>
+            <input type="text" id="custom-username" placeholder="Ton pseudo...">
+            <button onclick="saveUsername()" class="btn-primary">Entrer dans le chat</button>
         </div>
     </div>
 

@@ -8,44 +8,62 @@ const firebaseConfig = {
     appId: "1:1001346245488:web:8e756be5c46ce8927625b5"
 };
 
-// --- INITIALISATION (LA LIGNE MANQUANTE) ---
 firebase.initializeApp(firebaseConfig);
-
 const auth = firebase.auth();
-const provider = new firebase.auth.GoogleAuthProvider(); 
 const db = firebase.database();
 const messagesRef = db.ref('messages');
+const provider = new firebase.auth.GoogleAuthProvider();
 
-// --- AUTHENTIFICATION GOOGLE ---
+// --- CONNEXION ---
 function signInWithGoogle() {
-    auth.signInWithPopup(provider)
-        .then((result) => {
-            console.log("Connecté :", result.user.displayName);
-        })
-        .catch((error) => {
-            // Si l'erreur est "auth/operation-not-allowed", voir l'étape 2 ci-dessous
-            alert("Erreur : " + error.message);
-        });
+    auth.signInWithPopup(provider).catch(err => alert(err.message));
 }
 
-function logout() { auth.signOut(); }
+// Fonction pour enregistrer le pseudo perso
+function saveUsername() {
+    const chosenName = document.getElementById('custom-username').value;
+    if (chosenName.trim() !== "") {
+        localStorage.setItem('chat_pseudo', chosenName); // On sauvegarde dans le navigateur
+        setupChatUI(auth.currentUser); // On lance le chat
+    } else {
+        alert("Merci d'entrer un pseudo !");
+    }
+}
 
-// Surveillance de la connexion
 auth.onAuthStateChanged(user => {
     if (user) {
-        document.getElementById('auth-screen').style.display = 'none';
-        document.getElementById('chat-screen').style.display = 'flex';
-        window.currentUserId = user.uid;
-        window.currentUsername = user.displayName;
-        window.userPhoto = user.photoURL; 
-        document.getElementById('user-display').innerText = `Hello, ${window.currentUsername}`;
+        // Est-ce qu'on a déjà un pseudo enregistré ?
+        const savedPseudo = localStorage.getItem('chat_pseudo');
+        
+        if (!savedPseudo) {
+            // Pas de pseudo ? On montre l'écran de choix
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('username-screen').style.display = 'flex';
+        } else {
+            // Déjà un pseudo ? On lance le chat direct
+            setupChatUI(user);
+        }
     } else {
+        // Déconnecté
         document.getElementById('auth-screen').style.display = 'flex';
         document.getElementById('chat-screen').style.display = 'none';
+        document.getElementById('username-screen').style.display = 'none';
     }
 });
 
-// --- ENVOI DE MESSAGE ---
+function setupChatUI(user) {
+    document.getElementById('username-screen').style.display = 'none';
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('chat-screen').style.display = 'flex';
+    
+    window.currentUserId = user.uid;
+    window.currentUsername = localStorage.getItem('chat_pseudo'); // On utilise le pseudo perso
+    window.userPhoto = user.photoURL;
+
+    document.getElementById('user-display').innerText = `Pseudo : ${window.currentUsername}`;
+}
+
+// --- ENVOI ---
 document.getElementById('chat-form').addEventListener('submit', (e) => {
     e.preventDefault();
     const text = document.getElementById('message').value;
@@ -54,26 +72,37 @@ document.getElementById('chat-form').addEventListener('submit', (e) => {
     messagesRef.push({
         uid: window.currentUserId,
         username: window.currentUsername,
-        photo: window.userPhoto || "", 
+        photo: window.userPhoto,
         message: text,
         timestamp: firebase.database.ServerValue.TIMESTAMP
     });
     document.getElementById('message').value = "";
 });
 
-// --- AFFICHAGE (AJOUTE CETTE PARTIE POUR VOIR LES MESSAGES) ---
-messagesRef.limitToLast(20).on('child_added', (snapshot) => {
+// --- RÉCEPTION ---
+messagesRef.limitToLast(30).on('child_added', (snapshot) => {
     const data = snapshot.val();
     const isMe = data.uid === window.currentUserId;
-    
+    const chatBox = document.getElementById('chat-box');
+
     const messageElement = document.createElement('div');
     messageElement.className = `message ${isMe ? 'outgoing' : 'incoming'}`;
     
+    // On n'affiche le pseudo et la photo que pour les autres
+    const userInfoHTML = !isMe ? `
+        <div class="pseudo-label">
+            <img src="${data.photo}" class="user-pic">
+            <span>${data.username}</span>
+        </div>` : "";
+
+    const time = data.timestamp ? new Date(data.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '';
+
     messageElement.innerHTML = `
-        ${!isMe ? `<img src="${data.photo}" class="user-pic"><b>${data.username}</b>` : ""}
-        <span>${data.message}</span>
+        ${userInfoHTML}
+        <span class="text-content">${data.message}</span>
+        <small class="time-label">${time}</small>
     `;
 
-    document.getElementById('chat-box').appendChild(messageElement);
-    document.getElementById('chat-box').scrollTop = document.getElementById('chat-box').scrollHeight;
+    chatBox.appendChild(messageElement);
+    chatBox.scrollTop = chatBox.scrollHeight;
 });
