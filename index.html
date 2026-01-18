@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Chat</title>
     <link rel="stylesheet" href="style.css">
     
@@ -13,38 +14,36 @@
 
     <div id="auth-screen" class="auth-container">
         <div class="auth-box">
-            <h2>⚡ Chat</h2>
-            <p>Connectez-vous pour accéder au chat.</p>
+            <h2>⚡ Chat App</h2>
             <button onclick="signInWithGoogle()" class="btn-google">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
-                Se connecter avec Google
+                Continuer avec Google
             </button>
         </div>
     </div>
 
     <div id="username-screen" class="auth-container" style="display: none;">
         <div class="auth-box">
-            <h3>Presque fini !</h3>
-            <p>Choisis le pseudo qui apparaîtra dans le chat.</p>
+            <h3>Choisis ton pseudo</h3>
             <div class="input-group">
-                <input type="text" id="custom-username" placeholder="Ton pseudo perso..." maxlength="15">
-                <button onclick="saveUsername()" class="btn-primary">Commencer</button>
+                <input type="text" id="custom-username" placeholder="Pseudo..." maxlength="15">
+                <button onclick="saveUsername()" class="btn-primary">Entrer</button>
             </div>
         </div>
     </div>
 
     <div id="chat-screen" class="chat-container" style="display: none;">
         <header>
-            <div class="user-info">
-                <span id="user-display">Chargement...</span>
-            </div>
-            <button onclick="logout()" class="logout-btn">Déconnexion</button>
+            <span id="user-display">Chargement...</span>
+            <button onclick="logout()" class="logout-btn">
+                <span>Déconnexion</span>
+            </button>
         </header>
 
         <div id="chat-box" class="chat-box"></div>
 
         <form id="chat-form">
-            <input type="text" id="message" placeholder="Écrivez votre message..." required autocomplete="off">
+            <input type="text" id="message" placeholder="Message..." required autocomplete="off">
             <button type="submit">Envoyer</button>
         </form>
     </div>
