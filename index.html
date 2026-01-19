@@ -11,6 +11,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
 </head>
 <body>
+
     <div id="auth-screen" class="auth-container">
         <div class="auth-box">
             <h2>Connexion au Chat</h2>
@@ -34,20 +35,58 @@
 
     <div id="chat-screen" class="chat-container" style="display: none;">
         <header>
-            <span id="user-display">Chargement...</span>
-            <button onclick="logout()" class="logout-btn">
-                <span>Déconnexion</span>
-            </button>
+            <div class="header-left">
+                <span id="user-display">Chargement...</span>
+                <span id="current-forum-title" style="margin-left: 15px; color: #fbbf24; font-weight: bold;"># général</span>
+            </div>
+            <button onclick="logout()" class="logout-btn">Déconnexion</button>
         </header>
 
-        <div id="chat-box" class="chat-box"></div>
+        <div class="main-layout">
+            <nav class="sidebar">
+                <div class="sidebar-header">
+                    <span>SALONS</span>
+                    <button onclick="createNewForum()" class="add-forum-btn">+</button>
+                </div>
+                <div id="forums-list" class="forums-list"></div>
+            </nav>
 
-        <form id="chat-form">
-            <input type="text" id="message" placeholder="Message..." required autocomplete="off">
-            <button type="submit">Envoyer</button>
-        </form>
+            <div class="chat-area">
+                <div id="chat-box" class="chat-box"></div>
+                <form id="chat-form"> <input type="text" id="message" placeholder="Message..." required autocomplete="off">
+                    <button type="submit">Envoyer</button>
+                </form>
+            </div>
+        </div>
     </div>
 
+    <div id="create-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <h3>Nouveau Salon</h3>
+            <label>Nom :</label>
+            <input type="text" id="create-forum-name">
+            <label>Couleur :</label>
+            <input type="color" id="create-forum-color" value="#3b82f6">
+            <div class="modal-buttons">
+                <button onclick="closeCreateModal()">Annuler</button>
+                <button onclick="confirmCreateForum()" style="background:#10b981; color:white;">Créer</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="forum-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <h3>Réglages</h3>
+            <label>Nom :</label>
+            <input type="text" id="edit-forum-name">
+            <label>Couleur :</label>
+            <input type="color" id="edit-forum-color">
+            <div class="modal-buttons">
+                <button onclick="closeModal()">Annuler</button>
+                <button onclick="saveForumSettings()" style="background:#3b82f6; color:white;">Enregistrer</button>
+            </div>
+        </div>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
