@@ -35,11 +35,14 @@
 
     <div id="chat-screen" class="chat-container" style="display: none;">
         <header>
-            <div class="header-left">
-                <span id="user-display">Chargement...</span>
-                <span id="current-forum-title" style="margin-left: 15px; color: #fbbf24; font-weight: bold;"># général</span>
+            <div style="display: flex; align-items: center;">
+                <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+                <h2 id="current-forum-title"># général</h2>
             </div>
-            <button onclick="logout()" class="logout-btn">Déconnexion</button>
+            <div id="user-info">
+                <span id="user-display"></span>
+                <button class="logout-btn" onclick="logout()">Déconnexion</button>
+            </div>
         </header>
 
         <div class="main-layout">

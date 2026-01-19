@@ -264,3 +264,21 @@ document.getElementById('chat-form').addEventListener('submit', (e) => {
         input.value = "";
     }
 });
+
+function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    sidebar.classList.toggle('open');
+}
+
+// Ferme la sidebar automatiquement quand on clique sur un salon (sur mobile)
+document.addEventListener('click', (e) => {
+    const sidebar = document.querySelector('.sidebar');
+    const menuToggle = document.querySelector('.menu-toggle');
+    
+    if (window.innerWidth <= 768 && 
+        !sidebar.contains(e.target) && 
+        !menuToggle.contains(e.target) && 
+        sidebar.classList.contains('open')) {
+        sidebar.classList.remove('open');
+    }
+});
